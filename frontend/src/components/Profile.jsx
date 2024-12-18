@@ -65,8 +65,9 @@ function Profile() {
         );
         logout();
         toast.success("Cuenta Eliminada");
-        setInterval(() => {}, 100);
-        navigate("/register");
+        setInterval(() => {
+          navigate("/register");
+        }, 1000);
       } catch (error) {
         toast.error(error.response?.data?.message || "Delete failed");
       }

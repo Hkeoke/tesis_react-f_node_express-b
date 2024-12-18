@@ -1,6 +1,6 @@
-import pkg from 'pg';
+import pkg from "pg";
 const { Pool } = pkg;
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -9,7 +9,7 @@ export const pool = new Pool({
   password: process.env.DB_PASSWORD,
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
-  database: process.env.DB_NAME
+  database: process.env.DB_NAME,
 });
 
 export const initializeDatabase = async () => {
@@ -34,14 +34,15 @@ export const initializeDatabase = async () => {
         user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
         title VARCHAR(255) NOT NULL,
         content TEXT,
+        datos TEXT,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
     `);
 
-    console.log('Database initialized successfully');
+    console.log("Database initialized successfully");
   } catch (error) {
-    console.error('Error initializing database:', error);
+    console.error("Error initializing database:", error);
     throw error;
   }
 };

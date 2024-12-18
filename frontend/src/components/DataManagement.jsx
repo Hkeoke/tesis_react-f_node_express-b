@@ -10,6 +10,8 @@ import {
 } from "react-bootstrap";
 import { FaTrash, FaEdit, FaPlus } from "react-icons/fa";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { TextDataFetcher } from "./TextDataFetcher";
 
 export function DataManagement() {
   const [data, setData] = useState([]);
@@ -52,7 +54,7 @@ export function DataManagement() {
         { title, content, id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setSuccess("Datos adicionados con exito");
+      toast.success("Datos adicionados con exito");
       setTitle("");
       setContent("");
       setShowAddModal(false);
@@ -76,10 +78,10 @@ export function DataManagement() {
           data: { id: id1 },
         }
       );
-      setSuccess("Datos eliminados con exito");
+      toast.success("Datos eliminados con exito");
       fetchData();
     } catch (err) {
-      setError("FNo se pudo eliminar los datos");
+      toast.error("No se pudo eliminar los datos");
     }
   };
 
@@ -103,7 +105,7 @@ export function DataManagement() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setSuccess("Datos actualizados con exito");
+      toast.success("Datos actualizados con exito");
       setShowEditModal(false);
       fetchData();
     } catch (err) {
@@ -112,55 +114,48 @@ export function DataManagement() {
   };
 
   return (
-    <div
+    <Container
+      fluid
       style={{
-        height: "100%",
+        padding: "1cm !important", // 1cm de padding en todos los bordes
+        height: "100vh",
         width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        padding: "5rem 1cm", // 1cm margin from browser edges
+        boxSizing: "border-box",
       }}
     >
-      <h2 className="mb-3">Manejo de Datos</h2>
+      <h2 className="text-center mb-4">Manejo de Proyectos</h2>
 
       {error && <Alert variant="danger">{error}</Alert>}
       {success && <Alert variant="success">{success}</Alert>}
 
-      <Card
-        className="px-5"
+      <div
         style={{
-          width: "100%",
-          flex: 4,
           display: "flex",
-          flexDirection: "column",
-          minHeight: "100%",
-          minWidth: "100%",
+          gap: "20px",
+          height: "calc(100vh - 200px)",
         }}
       >
-        <Card.Header>
-          <h5 className="mb-6 md-6 px-6">Lista de Datos</h5>
-        </Card.Header>
-        <Card.Body
+        <Card
           style={{
-            flex: 1,
-            minHeight: 0,
-            padding: "5mm", // 5mm padding inside the card
+            width: "100%",
+            height: "100%",
           }}
         >
-          <div
+          <Card.Header>
+            <h5 className="mb-2">Lista de Proyectos</h5>
+          </Card.Header>
+          <Card.Body
             style={{
-              height: "100%",
+              padding: "10px",
               overflow: "auto",
             }}
           >
-            <Table striped bordered hover style={{ margin: 0 }}>
+            <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th style={{ minWidth: "400px" }}>Titulo</th>
-                  <th style={{ minWidth: "300px" }}>Contenido</th>
-                  <th style={{ minWidth: "120px", width: "120px" }}>
-                    Acciones
-                  </th>
+                  <th style={{ width: "400px" }}>Titulo</th>
+                  <th style={{ width: "1000px" }}>Contenido</th>
+                  <th style={{ width: "120px" }}>Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -169,22 +164,20 @@ export function DataManagement() {
                     <td
                       style={{
                         maxWidth: "200px",
-                        whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
                       }}
-                      title={item.title}
                     >
                       {item.title}
                     </td>
                     <td
                       style={{
                         maxWidth: "300px",
-                        whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
                       }}
-                      title={item.content}
                     >
                       {item.content}
                     </td>
@@ -209,16 +202,19 @@ export function DataManagement() {
                 ))}
               </tbody>
             </Table>
-          </div>
-        </Card.Body>
-      </Card>
+          </Card.Body>
+        </Card>
 
-      {/* Floating Action Button */}
+        <div style={{ width: "35%" }}>
+          <TextDataFetcher userId={localStorage.getItem("id")} />
+        </div>
+      </div>
+
       <button
         style={{
           position: "fixed",
-          bottom: "2rem",
-          right: "2rem",
+          bottom: "1cm",
+          right: "1cm",
           width: "60px",
           height: "60px",
           borderRadius: "50%",
@@ -246,7 +242,7 @@ export function DataManagement() {
         <FaPlus size={24} />
       </button>
 
-      {/* Add Modal */}
+      {/* Los modales permanecen igual */}
       <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Agregar Nuevo Dato</Modal.Title>
@@ -290,7 +286,6 @@ export function DataManagement() {
         </Modal.Body>
       </Modal>
 
-      {/* Edit Modal */}
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Editar Datos</Modal.Title>
@@ -330,7 +325,7 @@ export function DataManagement() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </Container>
   );
 }
 

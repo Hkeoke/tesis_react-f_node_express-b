@@ -19,7 +19,13 @@ import "./App.css";
 function App() {
   return (
     <AuthProvider>
-      <ToastContainer />
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+      />
       <Router>
         <Navigation />
         <Container className="py-4">

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 
@@ -18,7 +18,9 @@ function Register() {
     try {
       await axios.post("http://localhost:3000/api/auth/register", userData);
       toast.success("Registration successful!");
-      navigate("/login");
+      setInterval(() => {
+        navigate("/login");
+      }, 1000);
     } catch (error) {
       toast.error(error.response?.data?.message || "Registration failed");
     }
@@ -96,6 +98,18 @@ function Register() {
               <button type="submit" className="btn btn-primary w-100">
                 Register
               </button>
+              <div className="text-center">
+                <p className="mb-0">¿Ya tienes una cuenta?</p>
+                <Link to="/login">
+                  <button
+                    type="button"
+                    className="btn btn-link p-0"
+                    style={{ color: "#f54749" }}
+                  >
+                    Inicia sesion aquí
+                  </button>
+                </Link>
+              </div>
             </form>
           </div>
         </div>

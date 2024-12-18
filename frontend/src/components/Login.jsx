@@ -30,9 +30,10 @@ function Login() {
       console.log(localStorage.getItem("id"));
 
       toast.success("Login successful!");
-      setInterval(() => {}, 100);
+      setInterval(() => {
+        navigate("/data");
+      }, 1000);
       // Navegar inmediatamente después del login exitoso
-      navigate("/data");
     } catch (error) {
       toast.error(error.response?.data?.message || "Login failed");
     }
@@ -40,13 +41,6 @@ function Login() {
 
   return (
     <>
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-      />
       <div className="row justify-content-center ">
         <div className="col-md-12 col-lg-12">
           <div

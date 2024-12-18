@@ -6,7 +6,7 @@ const router = express.Router();
 router.get("/obtener/:id", authenticateToken, async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT * FROM user_data WHERE user_id = $1 ORDER BY created_at DESC",
+      "SELECT title,content,id FROM user_data WHERE user_id = $1 ORDER BY created_at DESC",
       [req.params.id]
     );
     res.json(result.rows);
@@ -27,7 +27,23 @@ router.post("/crear", authenticateToken, async (req, res) => {
   }
 });
 
-// Update data
+router.post("/guardar", authenticateToken, async (req, res) => {
+  try {
+    console.log("jefergjrkglr");
+    const { datos, id } = req.body;
+    console.log({ datos, id });
+    const result = await pool.query(
+      "UPDATE user_data SET datos = $1 WHERE user_id = $2 RETURNING *",
+
+      [datos, id]
+    );
+    console.log(result.rows);
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ message: "Server pin" });
+  }
+});
+
 router.put("/update/:id", authenticateToken, async (req, res) => {
   try {
     const { title, content, id } = req.body;
